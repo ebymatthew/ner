@@ -65,7 +65,7 @@ public abstract class NERScanner implements Iterator<String> {
 	}
 
 	/**
-	 * Override the 'hasNext' of the Iterable interface.
+	 * Override the 'hasNext' of the Iterator interface.
 	 */
 	@Override
 	public boolean hasNext() {
@@ -73,7 +73,7 @@ public abstract class NERScanner implements Iterator<String> {
 	}
 
 	/**
-	 * Override the 'next' of the Iterable interface.
+	 * Override the 'next' of the Iterator interface.
 	 */
 	@Override
 	public String next() {
@@ -81,7 +81,7 @@ public abstract class NERScanner implements Iterator<String> {
 	}
 
 	/**
-	 * Override the 'remove' of the Iterable interface.
+	 * Override the 'remove' of the Iterator interface.
 	 */
 	@Override
 	public void remove() {

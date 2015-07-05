@@ -8,8 +8,9 @@ import java.io.IOException;
 import java.io.StringReader;
 
 import org.matteby.ner.model.Document;
+import org.matteby.ner.model.ISentencePart;
 import org.matteby.ner.model.Sentence;
-import org.matteby.ner.model.Token;
+import org.matteby.ner.scanner.EntityScanner;
 import org.matteby.ner.scanner.SentenceScanner;
 import org.matteby.ner.scanner.TokenScanner;
 
@@ -58,10 +59,13 @@ public class DocumentProcessor {
 
 		// create a TokenScanner to iterate over tokens in the input text
 		TokenScanner tokenScanner = new TokenScanner(reader);
-		while ((tokenScanner.hasNext())) {
-			// get the next token
-			String tokenInput = tokenScanner.next();
-			sentence.appendToken(new Token(tokenInput));
+		// create an EntityScanner to scan over Entities and Tokens in the token stream
+		EntityScanner entityScanner = new EntityScanner(tokenScanner);
+		
+		while ((entityScanner.hasNext())) {
+			// get the next sentence part
+			ISentencePart sentencePart = entityScanner.next();
+			sentence.appendSentencePart(sentencePart);
 		}
 
 		return sentence;

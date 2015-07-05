@@ -18,19 +18,19 @@ public class Sentence {
 	//
 	// There is no need for thread safety. ArrayList isn't synchronized
 	// so it will be faster than synchronized structures.
-	private LinkedList<Token> tokens = new LinkedList<Token>();
+	private LinkedList<ISentencePart> sentenceParts = new LinkedList<ISentencePart>();
 
 	/**
 	 * Append a token to the end of the sentence
 	 */
-	public void appendToken(Token token) {
-		tokens.add(token);
+	public void appendSentencePart(ISentencePart sentencePart) {
+		sentenceParts.add(sentencePart);
 	}
 
 	/**
 	 * Get a list of tokens in the sentence
 	 */
-	public List<Token> getTokens() {
-		return tokens;
+	public List<ISentencePart> getSentenceParts() {
+		return sentenceParts;
 	}
 }
