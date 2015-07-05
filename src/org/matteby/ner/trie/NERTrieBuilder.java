@@ -27,7 +27,7 @@ public class NERTrieBuilder {
 		addEntity(new String[]{"Venice"}, trie);
 		addEntity(new String[]{"Carl", "Benjamin", "Boyer"}, trie);
 		addEntity(new String[]{"Bible"}, trie);
-		addEntity(new String[]{"Broyden–Fletcher–Goldfarb–Shanno"}, trie); // TODO this is unicode characters
+		addEntity(new String[]{"Broyden-Fletcher-Goldfarb-Shanno"}, trie); // converted to ASCII
 		addEntity(new String[]{"Newton"}, trie);
 		addEntity(new String[]{"BFGS"}, trie);
 		addEntity(new String[]{"Montgomery", "Castle"}, trie);

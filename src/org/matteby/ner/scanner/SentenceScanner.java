@@ -13,9 +13,9 @@ public class SentenceScanner extends NERScanner {
 	// source this only works on a subset of the English language found in
 	// nlp_data.txt
 	private static final String[] DELIMITERS = new String[] {
-			// split immediately after a single period that is not succeeded by
-			// a quotation mark or period
-			"(?<=[^.][.])(?=[^\".])",
+			// split immediately after a single period that is not preceeded by a period
+			// or preceeded by 'Inc' and is not succeed by a period, quotation mark or digit
+			"(?<=(?<!([.]|Inc))[.])(?=[^\".\\d])",
 			// split immediately after a question mark or exclamation mark
 			// that is not succeeded by a quotation mark
 			"(?<=[!?])(?=[^\"])",
@@ -29,6 +29,24 @@ public class SentenceScanner extends NERScanner {
 	 */
 	public SentenceScanner(Reader input) {
 		super(input);
+	}	
+	
+	/**
+	 * Override the 'next' of the Iterator interface.
+	 */
+	@Override
+	public String next() {
+		
+		// the sentence scanner also replaces unicode characters with the ascii equivalent
+		// this is the wrong place to this but it works for the test data set.
+		// should be done before sentence delimiting occurs and should use a utility
+		// that does general purpose ASCII conversion
+		String token = scanner
+				.next()
+				.replace('\u2013', '-')
+				.replace('\u00d7', 'x');
+		
+		return token;
 	}
 
 	/**

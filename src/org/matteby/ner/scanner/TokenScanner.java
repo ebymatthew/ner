@@ -19,16 +19,22 @@ public class TokenScanner extends NERScanner {
 			// split immediately before an ellipsis
 			"(?=[.]{3})",
 			// split immediately after a period that is not preceded or
-			// succeeded by a period
-			"(?<=[^.][.])(?=[^.])",
+			// succeeded by a period and is not succeeded by a digit
+			"(?<=[^.][.])(?=[^.\\d])",
 			// split immediately before a period that is not preceded by a
-			// period and is not succeed by a period or is succeeded by an end
-			// of string
-			"(?<=[^.])(?=([.]([^.]|$)))",
-			// split immediately after any of the following punctuation: ",()?'
-			"(?<=[\",()?'])",
-			// split immediately before any of the following punctuation: ",()?'
-			"(?=[\",()?'])" };
+			// period or digit and is not succeed by a period or is succeeded by
+			// an end of string
+			"(?<=[^.\\d])(?=([.]([^.]|$)))",
+			// split immediately before a period that is preceeded by a digit
+			// and is not succeded by a digit
+			"(?<=[\\d])(?=([.](\\D|$)))",
+			// split immediately after any of the following punctuation: ",()?
+			"(?<=[\",()?])",
+			// split immediately before any of the following punctuation: ",()?':;
+			"(?=[\",()?':;])",
+			// split immediately after an apostrophe that is not
+			// succeeded by an s
+			"(?<=['])(?=([^s]))" };
 
 	/**
 	 * Constructor for TokenScanner expects a Reader as an input source of

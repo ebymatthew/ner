@@ -19,6 +19,9 @@ public class Document {
 	// There is no need for thread safety. ArrayList isn't synchronized
 	// so it will be faster than synchronized structures.
 	private List<Sentence> sentences = new ArrayList<Sentence>();
+	
+	// name of document
+	private String name;
 
 	/**
 	 * Append a sentence to the end of the Document
@@ -32,5 +35,19 @@ public class Document {
 	 */
 	public List<Sentence> getSentences() {
 		return sentences;
+	}
+
+	/**
+	 * Get name of document
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * Set name of document
+	 */
+	public void setName(String name) {
+		this.name = name;
 	}
 }

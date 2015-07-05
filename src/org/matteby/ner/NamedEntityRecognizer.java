@@ -7,13 +7,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.matteby.ner.model.Document;
-import org.matteby.ner.model.serializer.xml.DocumentXMLSerializer;
+import org.matteby.ner.concurrent.ZipDocumentProcessor;
+import org.matteby.ner.model.DocumentCollection;
+import org.matteby.ner.model.serializer.xml.DocumentCollectionXMLSerializer;
 
 /**
  * Main class for the NamedEntityRecognition program. Program processes an input
@@ -74,9 +77,9 @@ public class NamedEntityRecognizer {
 		File input = new File(path);
 		// check that input file exists
 		if (!input.exists()) {
-			exitWithMessage("Input file not found: " + input.getPath());
+			exitWithMessage("Input zip file not found: " + input.getPath());
 		} else if (!input.isFile()) {
-			exitWithMessage("Input parameter is a directory. Please supply a file. Input: " + input.getPath());
+			exitWithMessage("Input parameter is a directory. Please supply a zip file. Input: " + input.getPath());
 		}
 		return input;
 	}
@@ -115,22 +118,31 @@ public class NamedEntityRecognizer {
 		File output = checkOutputPath(argMap.get("output"));
 
 		// process the input file into a Document data structure
-		Document document = null;
-		try {
-			DocumentProcessor processor = new DocumentProcessor();
-			document = processor.processDocument(input);
+		DocumentCollection documents = null;
+
+		// zipFile is auto closeable so wrap it in try
+		// to auto close
+		try (ZipFile zipFile = new ZipFile(input)) {
+			ZipDocumentProcessor processor = new ZipDocumentProcessor();
+			documents = processor.processDocuments(zipFile);
 		} catch (FileNotFoundException exception) {
 			exitWithMessage("Input file not found: " + exception.getLocalizedMessage());
+		} catch (ZipException exception) {
+			exitWithMessage(
+					"ZipException while processing input document. Ensure that the input is a valid zip file: " 
+					+ exception.getLocalizedMessage());
 		} catch (IOException exception) {
 			exitWithMessage("IOException while processing input document: " + exception.getLocalizedMessage());
+		} catch (InterruptedException exception) {
+			exitWithMessage("InterruptedException while processing input document: " + exception.getLocalizedMessage());
 		}
 
 		// check that document processing succeeded
-		if (document == null) {
-			exitWithMessage("Error processing document.");
+		if (documents == null) {
+			exitWithMessage("Error processing document collection.");
 		}
 
-		// persist the Document to XML
+		// persist the DocumentCollection to XML
 		// wrap the FileWriter in a try statement to auto close
 		XMLOutputFactory factory = XMLOutputFactory.newInstance();
 		try (FileWriter fileWriter = new FileWriter(output)) {
@@ -139,8 +151,8 @@ public class NamedEntityRecognizer {
 
 			// write the xml document
 			writer.writeStartDocument("1.0");
-			DocumentXMLSerializer documentSerializer = new DocumentXMLSerializer();
-			documentSerializer.serialize(document, writer);
+			DocumentCollectionXMLSerializer documentCollectionSerializer = new DocumentCollectionXMLSerializer();
+			documentCollectionSerializer.serialize(documents, writer);
 			writer.writeEndDocument();
 
 			// flush the document
