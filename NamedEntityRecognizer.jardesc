@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="WINDOWS-1252" standalone="no"?>
+<jardesc>
+    <jar path="ner/dist/NamedEntityRecognizer.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/ner/NamedEntityRecognizer.jardesc" exportErrors="false" exportWarnings="false" includeDirectoryEntries="false" overwrite="true" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="true" mainClassHandleIdentifier="=ner/src&lt;org.matteby.ner{NamedEntityRecognizer.java[NamedEntityRecognizer" manifestLocation="/ner/META-INF/MANIFEST.MF" manifestVersion="1.0" reuseManifest="false" saveManifest="true" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <file path="/ner/README.md"/>
+        <javaElement handleIdentifier="=ner/src"/>
+    </selectedElements>
+</jardesc>
